@@ -178,6 +178,8 @@ form input[type="text"]::placeholder{
     justify-content: center;
     gap: 2rem;
     flex-wrap: wrap;
+    font-size: 1.2rem;
+    font-weight: 600;
 }
 
 .details > div{
@@ -198,6 +200,7 @@ form input[type="text"]::placeholder{
 .details div span{
     color: rgb(236 110 76);
     font-weight: 700;
+    font-size: 1.5rem;
 }
 
 

@@ -23,6 +23,8 @@ const formEle = document.querySelector("form");
 
 //add event listner on form to triger function
 // hum nay submit per prevent lagaya hay kay page refresh na ho
+//or go event argument pass kiya hay wo by default go event laga hua hay 
+//us ko prevent kernay kay liye
 formEle.addEventListener("submit", (event) => {
     event.preventDefault();
     
@@ -30,23 +32,75 @@ formEle.addEventListener("submit", (event) => {
     const cityInputEleValue = cityInputEle.value;
     console.log(cityInputEleValue);
 
-    
 
+    //pass argument in the function
+    getWeatherData(cityInputEleValue);
 
 });
 
 
 //this functon will fetch the data from the api
-function getWeatherData(){
+async function getWeatherData(cityInputEleValue){
+
     try{
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityInputEleValue}&appid=${apikey}&units=metric`);
+
+        // check response is ok or not
+        if (!response.ok){
+            throw new Error(" NETWORK RESPONSE WAS NOT OK");
+        }
+
+
+
+        // convert api data into useable json format
+        const data =  await response.json();
+
+
+
+        console.log(data);
+
+
+
+        // lets retrive data from the json object 
+
+        //main is key name > temp is another key name inside main you can see these things inside console
+        const temperature = Math.round(data.main.temp);
+
+
+        //we used index because weather is array that why we used index num
+        const description = data.weather[0].description;
+        
+        const icon = data.weather[0].icon
+
+        const details = [
+            
+            `Feels Like: ${Math.round(data.main.feels_like)}`,
+            `Humidity: ${data.main.humidity}`,
+            `Wind Speed: ${data.wind.speed}` 
+        
+        ]
+
+
+        // let change the data on the front end and replace it with our fetch data
+        const  iconimage = document.querySelector(".icon");
+
+        iconimage.innerHTML = `<img src="https://openweathermap.org/img/wn/${icon}.png" alt="Weather icon">`;
+
+        const changetemp = document.querySelector(".temperature");
+        changetemp.textContent =  `${temperature} °C `;
+
+
+        const chanedescp = document.querySelector(".description");
+        chanedescp.textContent = `${description}`;
+
+        // its time to change feels like humidity and wind speed
+        const changefee = document.querySelectorAll("details");
+
 
     }
-    catch (error){
+    catch(error){
         
     }
-}
-
-
-
+};
 
 
